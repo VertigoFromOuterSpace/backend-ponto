@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require ('cors');
 const PORT = 3000;
 
 const sequelize = require('./config/db');
@@ -15,29 +16,46 @@ sequelize.sync({ alter: true })
     console.log("Erro!");
 });
 
+app.use(cors());
+app.use(express.json());
 
 
-
-
-
-
-// ROTAS
-app.get('/', (req, res) => {
-    res.send("Chamada ao recurso realizada com sucesso");
+// Rota que retorna TODOS os usuários da aplicação
+app.get('/usuarios', async (req, res) => {
+    // Como tratar erro (try/catch)?
+    
+    const usuarios = await Usuario.findAll();
+    res.json(usuarios);
 });
 
-// retornar todos os usuários
-app.get('/users', (req, res) => {
-    res.send("Aqui vou retornar todos os usuários do sistema")
+
+// Rota que busca um usuário específico 
+app.get('/usuario/:id_usuario', async (req, res) => {
+    const usuario = await Usuario.findAll({
+        where: {
+          id_usuario: req.params.id_usuario
+        },
+    });
+
+    res.json(usuario);
 });
 
-app.get('/user/:id', (req, res) => {
-    res.send(req.params.id)
+
+// Rota que cria um usuário
+app.post('/usuario', async (req, res) => {
+    // Fazer isso em formato de desestruturação
+    // {nome, email ...} = req.body
+    const usuario = await Usuario.create({
+        nome: req.body.nome,
+        email: req.body.email,
+        login: req.body.login,
+        senha: req.body.senha,
+        permissao: req.body.permissao
+    });
+    //https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
+    res.status(201).json(usuario);
 });
 
-app.post('/rotapost', (req, res) => {
-    res.send("Chamada ao recurso usando o post realizada com sucesso");
-});
 
 
 app.listen(PORT, () => {

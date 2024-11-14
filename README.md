@@ -1,2 +1,1 @@
 # backend-ponto
-# Placeholder
