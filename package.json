@@ -1,7 +1,7 @@
 {
-  "name": "backend-ponto",
+  "name": "backend-ponto-ads",
   "version": "1.0.0",
-  "description": "Backend do sistema de ponto",
+  "description": "Backend do sistema de controle de ponto",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
